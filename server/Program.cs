@@ -56,7 +56,7 @@ namespace Server
                 {
                     WriteLnColored("META REQUEST", ConsoleColor.Magenta);
                     var size = new FileInfo(FileName).Length;
-                    var response = $"{FileName}/^/{size}";
+                    var response = $"{Path.GetFileName(FileName)}/^/{size}";
                     reply = response.ToUTFBytes();
                 }
                 else if (request.StartsWith("part:"))

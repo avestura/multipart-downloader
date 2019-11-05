@@ -21,6 +21,8 @@ namespace Client
 
         public static Socket ServerSocket { get; set; }
 
+        public static string SavePath { get; set; }
+
         public static IPEndPoint EndPoint { get; set; }
 
         public static string FileName { get; private set; }
@@ -30,6 +32,9 @@ namespace Client
         static void Main(string[] args)
         {
             NumberOfParts = GetNumber("Please enter number of parts: ");
+            WriteLine("Where do you want me to save the files? (default = '.') :");
+            var path = ReadLine();
+            SavePath = (string.IsNullOrEmpty(path)) ? "." : path;
             FetchMeta();
 
             Console.Write("Server is serving: ");
@@ -59,7 +64,7 @@ namespace Client
                 Write("Writing part data to: ");
                 WriteLnColored(partFileName, ConsoleColor.Blue);
 
-                File.WriteAllBytes(partFileName, data);
+                File.WriteAllBytes(Path.Combine(SavePath, partFileName), data);
 
                 if (CheckIfAllPartsDownloaded())
                 {
@@ -80,7 +85,8 @@ namespace Client
                 Write("> Checking whether file \"");
                 WriteColored(partFileName, ConsoleColor.Yellow);
                 Write("\" exists: ");
-                if (File.Exists(partFileName))
+                var partPath = Path.Combine(SavePath, partFileName);
+                if (File.Exists(partPath))
                 {
                     WriteLnColored("DOWNLOADED", ConsoleColor.Green);
                 }
@@ -96,20 +102,22 @@ namespace Client
 
         static void AssembleParts()
         {
-            using (var stream = new FileStream(FileName, FileMode.Append, FileAccess.Write))
+            var saveFilePath = Path.Combine(SavePath, FileName);
+            using (var stream = new FileStream(saveFilePath, FileMode.Append, FileAccess.Write))
             {
                 for (int i = 1; i <= NumberOfParts; i++)
                 {
-                    using (var partData = File.OpenRead(GetPartFileName(FileName, i)))
+                    var partPath = Path.Combine(SavePath, GetPartFileName(FileName, i));
+                    using (var partData = File.OpenRead(partPath))
                     {
                         partData.CopyTo(stream);
                     }
 
-                    File.Delete(GetPartFileName(FileName, i));
+                    File.Delete(partPath);
                 }
 
                 Write("All files assembled together in \"");
-                WriteColored(FileName, ConsoleColor.Green);
+                WriteColored(saveFilePath, ConsoleColor.Green);
                 WriteLine("\"");
             }
         }
