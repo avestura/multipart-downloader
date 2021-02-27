@@ -10,9 +10,9 @@ This is a sample socket proramming project which serves a file in server, and cl
 
 
 
-By: Aryan (Hossein) EbrahimPour -- Student ID: 98723249
+By: Aryan EbrahimPour
 
-Built in [Iran University of Science and Technology](https://iust.ac.ir) without 💖
+Built in [Iran University of Science and Technology](https://iust.ac.ir)
 
 
 ## Screenshot
