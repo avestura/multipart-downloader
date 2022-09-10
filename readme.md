@@ -1,4 +1,7 @@
-﻿# MultiPart Downloader
+# MultiPart Downloader
+
+> **Warning**
+> This is a custom TCP protocol for demonstration purposes only and most definitely suffers from security and efficiency issues. As a result, using this protocol for a real world scenario is not planned, nor recommended.
 
 This is a sample socket proramming project which serves a file in server, and client can ask server to chunk the files and serve each part separately.
 
